@@ -22,6 +22,8 @@ Seit 2021 keien VX.1-Daten mehr... RIP Quandl.
     
 Performance war historisch sehr gut, aber haben in der letzten Zeit (vor allem seit 
 Veröffentlichung der Bachelorarbeit) aber hat sich in letzter Zeit merklich verschlechtert.
+
+Need to consider cheat on open and comissions as well... ~~~
 '''
 
 class VIXTermStructure(bt.Strategy):
