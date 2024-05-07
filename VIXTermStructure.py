@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 import backtrader as bt
 import datetime
-import numpy as np
-import backtrader as bt
 import pandas as pd
 import quandl
-from tai_pan_converter import file_to_dataframe, tai_pan_dir_to_dataframe_extended
-from matplotlib import pyplot as plt
+from tai_pan_converter import file_to_dataframe
 import pyfolio as pf
 
 quandl.ApiConfig.api_key = "jAjUe26LEsdbkUACWYj4"
@@ -19,11 +16,6 @@ Bachelorarbeit zu der Strategie:
 http://www.diva-portal.org/smash/get/diva2:1447840/FULLTEXT01.pdf
     
 Seit 2021 keien VX.1-Daten mehr... RIP Quandl.
-    
-Performance war historisch sehr gut, aber haben in der letzten Zeit (vor allem seit 
-Veröffentlichung der Bachelorarbeit) aber hat sich in letzter Zeit merklich verschlechtert.
-
-Need to consider cheat on open and comissions as well... ~~~
 '''
 
 class VIXTermStructure(bt.Strategy):
@@ -105,16 +97,16 @@ class VIXTermStructure(bt.Strategy):
                 return
             else:
                 if self.getposition(data=self.vixy):
-                    self.close(data=self.vixy, price=self.vixy.open[0])
-                self.buy(data=self.svxy, price=self.svxy.open[0])
+                    self.close(data=self.vixy)
+                self.buy(data=self.svxy)
                 
         elif basis < 0:
             if self.getposition(self.vixy):
                 return
             else:
                 if self.getposition(self.svxy):
-                    self.close(data=self.svxy, price=self.svxy.open[0])
-                self.buy(self.vixy, price=self.vixy.open[0])
+                    self.close(data=self.svxy)
+                self.buy(self.vixy)
     
         else:
             return
@@ -150,9 +142,6 @@ class CheatSizer(bt.Sizer):
         return (1 - commission)*new_value // data.open[0]
         
     
-    
-    
-
 if __name__ == '__main__':
     printlog = True
 
@@ -208,9 +197,9 @@ if __name__ == '__main__':
     print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
     cerebro.plot()
     
-    strat0 = strats[0]
-    pyfoliozer = strat0.analyzers.getbyname('pyfolio')
-    returns, positions, transactions, gross_lev = pyfoliozer.get_pf_items()
+    # strat0 = strats[0]
+    # pyfoliozer = strat0.analyzers.getbyname('pyfolio')
+    # returns, positions, transactions, gross_lev = pyfoliozer.get_pf_items()
     
     # pf.create_round_trip_tear_sheet(returns, positions=positions, transactions=transactions)
     
