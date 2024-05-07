@@ -14,8 +14,10 @@ PYTHON VERSION 3.7.16
 
 Bachelorarbeit zu der Strategie: 
 http://www.diva-portal.org/smash/get/diva2:1447840/FULLTEXT01.pdf
-    
-Seit 2021 keien VX.1-Daten mehr... RIP Quandl.
+
+Probleme:  
+    - Seit 2021 keien VX.1-Daten mehr... RIP Quandl.
+    - Can't install zipline with python >3.5 anymore..
 '''
 
 class VIXTermStructure(bt.Strategy):
@@ -153,7 +155,7 @@ if __name__ == '__main__':
     
     names = ['VIXY', 'SVXY']
     for name in names:
-        df = file_to_dataframe(f"{name}.TXT")
+        df = file_to_dataframe(f"data/{name}.TXT")
         df = df.droplevel('ID').dropna()
         df = df[fromdate:todate]
         df = df.apply(lambda x: x.map(lambda y: y.replace(",", "."))).apply(pd.to_numeric)
@@ -162,7 +164,7 @@ if __name__ == '__main__':
     
     names = ['vix']
     for name in names:
-        dataname = f"{name}.csv"
+        dataname = f"data/{name}.csv"
         df = pd.read_csv(dataname)
         df['Date'] = pd.to_datetime(df['Date'])
         df = df.set_index('Date', drop=True)
