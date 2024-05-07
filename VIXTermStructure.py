@@ -2,9 +2,11 @@
 import backtrader as bt
 import datetime
 import pandas as pd
+import numpy as np
 import quandl
 from tai_pan_converter import file_to_dataframe
 import pyfolio as pf
+from matplotlib import pyplot as plt
 
 quandl.ApiConfig.api_key = "jAjUe26LEsdbkUACWYj4"
 
@@ -198,6 +200,12 @@ if __name__ == '__main__':
 
     print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
     cerebro.plot()
+    
+    strat0 = strats[0]
+    eq_curve = np.log(strat0.observers.broker.value.array / np.array(strat0.observers.broker.value.array[0]))
+    plt.title("Log plot of equity curve...")
+    plt.plot(eq_curve)
+    plt.show(block=True)
     
     # strat0 = strats[0]
     # pyfoliozer = strat0.analyzers.getbyname('pyfolio')
